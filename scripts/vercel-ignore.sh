@@ -1,6 +1,9 @@
 #!/bin/bash
-# Vercel Ignored Build Step: exit 0 = skip, exit 1 = build
-# Only build when web-relevant files change. Skip desktop, docs, scripts, CI, etc.
+
+# Always build on main if there is no previous SHA (e.g., first deploy or manual trigger)
+if [ "$VERCEL_GIT_COMMIT_REF" = "main" ] && [ -z "$VERCEL_GIT_PREVIOUS_SHA" ]; then
+  exit 1
+fi
 
 # On main: skip if ONLY scripts/, docs/, .github/, or non-web files changed
 if [ "$VERCEL_GIT_COMMIT_REF" = "main" ] && [ -n "$VERCEL_GIT_PREVIOUS_SHA" ]; then
@@ -17,8 +20,7 @@ fi
 # Skip preview deploys that aren't tied to a pull request
 [ -z "$VERCEL_GIT_PULL_REQUEST_ID" ] && exit 0
 
-# Resolve comparison base: prefer VERCEL_GIT_PREVIOUS_SHA, fall back to merge-base with main
-# (empty/invalid PREVIOUS_SHA caused false "build" on PRs that only touch scripts/)
+# Resolve comparison base...
 COMPARE_SHA="$VERCEL_GIT_PREVIOUS_SHA"
 if [ -z "$COMPARE_SHA" ] || ! git cat-file -e "$COMPARE_SHA" 2>/dev/null; then
   COMPARE_SHA=$(git merge-base HEAD origin/main 2>/dev/null)
@@ -27,22 +29,8 @@ fi
 
 # Build if any of these web-relevant paths changed
 git diff --name-only "$COMPARE_SHA" HEAD -- \
-  'src/' \
-  'api/' \
-  'server/' \
-  'shared/' \
-  'public/' \
-  'blog-site/' \
-  'pro-test/' \
-  'proto/' \
-  'package.json' \
-  'package-lock.json' \
-  'vite.config.ts' \
-  'tsconfig.json' \
-  'tsconfig.api.json' \
-  'vercel.json' \
-  'middleware.ts' \
-  | grep -q . && exit 1
+  'src/' 'api/' 'server/' 'shared/' 'public/' 'blog-site/' 'pro-test/' 'proto/' \
+  'package.json' 'package-lock.json' 'vite.config.ts' 'tsconfig.json' \
+  'tsconfig.api.json' 'vercel.json' 'middleware.ts' | grep -q . && exit 1
 
-# Nothing web-relevant changed, skip the build
 exit 0
