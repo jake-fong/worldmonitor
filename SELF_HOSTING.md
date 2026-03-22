@@ -11,9 +11,7 @@ Run the full World Monitor stack locally with Docker/Podman.
 ## 🚀 Quick Start
 
 ```bash
-# 1. Clone and enter the repo
-git clone https://github.com/koala73/worldmonitor.git
-cd worldmonitor
+# 1. Install dependencies
 npm install
 
 # 2. Start the stack

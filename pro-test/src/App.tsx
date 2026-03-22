@@ -1105,7 +1105,7 @@ const EnterprisePage = () => (
               <input type="text" name="name" placeholder={t('enterpriseShowcase.namePlaceholder')} required className="bg-wm-bg border border-wm-border rounded-sm px-4 py-3 text-sm focus:outline-none focus:border-wm-green transition-colors font-mono" />
               <input type="email" name="email" placeholder={t('enterpriseShowcase.emailPlaceholder')} required className="bg-wm-bg border border-wm-border rounded-sm px-4 py-3 text-sm focus:outline-none focus:border-wm-green transition-colors font-mono" />
             </div>
-            <span data-form-error className="hidden text-red-400 text-xs font-mono block" />
+            <span data-form-error className="text-red-400 text-xs font-mono block" />
             <div className="grid grid-cols-2 gap-4">
               <input type="text" name="organization" placeholder={t('enterpriseShowcase.orgPlaceholder')} required className="bg-wm-bg border border-wm-border rounded-sm px-4 py-3 text-sm focus:outline-none focus:border-wm-green transition-colors font-mono" />
               <input type="tel" name="phone" placeholder={t('enterpriseShowcase.phonePlaceholder')} required className="bg-wm-bg border border-wm-border rounded-sm px-4 py-3 text-sm focus:outline-none focus:border-wm-green transition-colors font-mono" />

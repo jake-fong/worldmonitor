@@ -1059,7 +1059,6 @@ small UI affordances.
 |---|---|
 | **File** | `src/components/CommunityWidget.ts` |
 | **Purpose** | Small floating widget linking to GitHub Discussions. |
-| **Exported** | `mountCommunityWidget()` |
 | **Notes** | Dismissible via `localStorage`. |
 
 ### PizzIntIndicator
