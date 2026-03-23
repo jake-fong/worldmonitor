@@ -92,7 +92,7 @@ const SEED_META = {
   wildfires:        { key: 'seed-meta:wildfire:fires',          maxStaleMin: 120 },
   outages:          { key: 'seed-meta:infra:outages',           maxStaleMin: 30 },
   climateAnomalies: { key: 'seed-meta:climate:anomalies',       maxStaleMin: 120 }, // runs as independent Railway cron (0 */2 * * *)
-  unrestEvents:     { key: 'seed-meta:unrest:events',           maxStaleMin: 75 },
+  unrestEvents:     { key: 'seed-meta:unrest:events',           maxStaleMin: 120 }, // 45min cron; 120 = 2h grace (was 75 = 30min buffer, too tight)
   cyberThreats:     { key: 'seed-meta:cyber:threats',           maxStaleMin: 480 },
   cryptoQuotes:     { key: 'seed-meta:market:crypto',           maxStaleMin: 30 },
   etfFlows:         { key: 'seed-meta:market:etf-flows',        maxStaleMin: 60 },
@@ -109,13 +109,11 @@ const SEED_META = {
   // serviceStatuses: moved to ON_DEMAND — RPC-populated, no dedicated seed, goes stale when no users visit
   cableHealth:      { key: 'seed-meta:cable-health',              maxStaleMin: 90 }, // ais-relay warm-ping runs every 30min; 90min = 3× interval catches missed pings without false positives
   macroSignals:     { key: 'seed-meta:economic:macro-signals',    maxStaleMin: 20 },
-  bisPolicy:        { key: 'seed-meta:economic:bis:policy',       maxStaleMin: 10080 },
-  bisExchange:      { key: 'seed-meta:economic:bis:eer',          maxStaleMin: 10080 },
-  bisCredit:        { key: 'seed-meta:economic:bis:credit',       maxStaleMin: 10080 },
+  bisPolicy:        { key: 'seed-meta:economic:bis',              maxStaleMin: 10080 }, // runSeed('economic','bis',...) writes seed-meta:economic:bis
   shippingRates:    { key: 'seed-meta:supply_chain:shipping',     maxStaleMin: 420 },
   chokepoints:      { key: 'seed-meta:supply_chain:chokepoints',  maxStaleMin: 60 },
-  minerals:         { key: 'seed-meta:supply_chain:minerals',     maxStaleMin: 10080 },
-  giving:           { key: 'seed-meta:giving:summary',            maxStaleMin: 10080 },
+  // minerals + giving: on-demand cachedFetchJson only, no seed-meta writer — freshness checked via TTL
+  // bisExchange + bisCredit: extras written by same BIS script via writeExtraKey, no dedicated seed-meta
   gpsjam:           { key: 'seed-meta:intelligence:gpsjam',       maxStaleMin: 720 },
   positiveGeoEvents:{ key: 'seed-meta:positive-events:geo',       maxStaleMin: 60 },
   riskScores:       { key: 'seed-meta:intelligence:risk-scores',  maxStaleMin: 30 }, // CII warm-ping every 8min; 30min = ~3.5x interval,
